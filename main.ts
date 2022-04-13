@@ -1,3 +1,8 @@
+function renderStuff () {
+    for (let index = 0; index <= 4; index++) {
+        led.plot(avoidX[index], avoidY[index])
+    }
+}
 function renderRoad () {
     if (road == 0) {
         led.plotBrightness(0, 0, roadB)
@@ -28,20 +33,34 @@ function renderRoad () {
         led.plotBrightness(4, 4, roadB)
     }
 }
-let roadB = 0
-let road = 0
-let playerX = 0
-let playerY = 0
+let avoidY: number[] = []
+let avoidX: number[] = []
+let roadB: number = []
+let road: number = []
+let playerX = 2
+let playerY = 4
 road = 0
-roadB = 1
+roadB = 5
+avoidX = []
+avoidY = []
+let avoidS: number[] = []
 basic.forever(function () {
-	
+    basic.pause(1000)
+    avoidX.push(3)
+    avoidY.push(1)
+    avoidS.push(1)
 })
+// render game
 basic.forever(function () {
     basic.clearScreen()
     renderRoad()
     led.plot(playerX, playerY)
+    renderStuff()
 })
+basic.forever(function () {
+	
+})
+// road state change
 basic.forever(function () {
     road = 0
     basic.pause(200)
