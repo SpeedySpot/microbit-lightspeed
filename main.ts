@@ -45,9 +45,6 @@ let avoidY: number[] = []
 let avoidS: number[] = []
 basic.forever(function () {
     basic.pause(1000)
-    avoidX.push(3)
-    avoidY.push(1)
-    avoidS.push(1)
 })
 // render game
 basic.forever(function () {
