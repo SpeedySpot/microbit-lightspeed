@@ -5,6 +5,15 @@ function moveStuff () {
                 avoidY[index] = avoidY[index] + 1
                 avoidT[index] = control.millis()
             }
+            if (avoidY[index] > 4) {
+                avoidT.removeAt(index)
+                avoidS.removeAt(index)
+                avoidX.removeAt(index)
+                avoidY.removeAt(index)
+            }
+            if (avoidY[index] == playerY && avoidX[index] == playerX) {
+                control.reset()
+            }
         }
     }
 }
@@ -51,21 +60,17 @@ let avoidY: number[] = []
 let avoidX: number[] = []
 let roadB = 0
 let road = 0
-let playerX = 2
-let playerY = 4
+let playerY = 0
+let playerX = 0
+playerX = 2
+playerY = 4
 road = 0
 roadB = 5
 avoidX = []
 avoidY = []
 avoidS = []
 avoidT = []
-basic.forever(function () {
-    basic.pause(2000)
-    avoidX.push(randint(0, 4))
-    avoidY.push(0)
-    avoidS.push(200)
-    avoidT.push(control.millis())
-})
+let roadS = 200
 // render game
 basic.forever(function () {
     basic.clearScreen()
@@ -74,16 +79,23 @@ basic.forever(function () {
     renderStuff()
     moveStuff()
 })
+basic.forever(function () {
+    basic.pause(2000)
+    avoidX.push(randint(0, 4))
+    avoidY.push(0)
+    avoidS.push(200)
+    avoidT.push(control.millis())
+})
 // road state change
 basic.forever(function () {
     road = 0
-    basic.pause(200)
+    basic.pause(roadS)
     road = 1
-    basic.pause(200)
+    basic.pause(roadS)
     road = 2
-    basic.pause(200)
+    basic.pause(roadS)
     road = 3
-    basic.pause(200)
+    basic.pause(roadS)
 })
 // Tilt Loop
 basic.forever(function () {
