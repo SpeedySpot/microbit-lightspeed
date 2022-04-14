@@ -1,6 +1,18 @@
+function moveStuff () {
+    for (let index = 0; index <= avoidX.length; index++) {
+        if (avoidX[index] == 0 || (avoidX[index] == 1 || (avoidX[index] == 2 || (avoidX[index] == 3 || avoidX[index] == 4)))) {
+            if (control.millis() > avoidT[index] + avoidS[index]) {
+                avoidY[index] = avoidY[index] + 1
+                avoidT[index] = control.millis()
+            }
+        }
+    }
+}
 function renderStuff () {
-    for (let index = 0; index <= avoidX; index++) {
-    	
+    for (let index = 0; index <= avoidX.length; index++) {
+        if (avoidX[index] == 0 || (avoidX[index] == 1 || (avoidX[index] == 2 || (avoidX[index] == 3 || avoidX[index] == 4)))) {
+            led.plot(avoidX[index], avoidY[index])
+        }
     }
 }
 function renderRoad () {
@@ -33,18 +45,26 @@ function renderRoad () {
         led.plotBrightness(4, 4, roadB)
     }
 }
-let avoidX: number = []
-let roadB: number = []
-let road: number = []
+let avoidT: number[] = []
+let avoidS: number[] = []
+let avoidY: number[] = []
+let avoidX: number[] = []
+let roadB = 0
+let road = 0
 let playerX = 2
 let playerY = 4
 road = 0
 roadB = 5
 avoidX = []
-let avoidY: number[] = []
-let avoidS: number[] = []
+avoidY = []
+avoidS = []
+avoidT = []
 basic.forever(function () {
-    basic.pause(1000)
+    basic.pause(2000)
+    avoidX.push(randint(0, 4))
+    avoidY.push(0)
+    avoidS.push(1000)
+    avoidT.push(control.millis())
 })
 // render game
 basic.forever(function () {
@@ -52,9 +72,7 @@ basic.forever(function () {
     renderRoad()
     led.plot(playerX, playerY)
     renderStuff()
-})
-basic.forever(function () {
-	
+    moveStuff()
 })
 // road state change
 basic.forever(function () {
