@@ -1,6 +1,6 @@
 function renderStuff () {
-    for (let index = 0; index <= 4; index++) {
-        led.plot(avoidX[index], avoidY[index])
+    for (let index = 0; index <= avoidX; index++) {
+    	
     }
 }
 function renderRoad () {
@@ -33,8 +33,7 @@ function renderRoad () {
         led.plotBrightness(4, 4, roadB)
     }
 }
-let avoidY: number[] = []
-let avoidX: number[] = []
+let avoidX: number = []
 let roadB: number = []
 let road: number = []
 let playerX = 2
@@ -42,7 +41,7 @@ let playerY = 4
 road = 0
 roadB = 5
 avoidX = []
-avoidY = []
+let avoidY: number[] = []
 let avoidS: number[] = []
 basic.forever(function () {
     basic.pause(1000)
