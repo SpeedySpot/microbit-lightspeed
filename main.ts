@@ -63,7 +63,7 @@ basic.forever(function () {
     basic.pause(2000)
     avoidX.push(randint(0, 4))
     avoidY.push(0)
-    avoidS.push(1000)
+    avoidS.push(200)
     avoidT.push(control.millis())
 })
 // render game
@@ -87,17 +87,11 @@ basic.forever(function () {
 })
 // Tilt Loop
 basic.forever(function () {
-    if (input.rotation(Rotation.Roll) > 30 && input.rotation(Rotation.Roll) < 90) {
+    if (input.rotation(Rotation.Roll) > 10 && input.rotation(Rotation.Roll) < 90) {
         playerX += 1
     }
-    if (input.rotation(Rotation.Roll) < -30 && input.rotation(Rotation.Roll) > -90) {
+    if (input.rotation(Rotation.Roll) < -10 && input.rotation(Rotation.Roll) > -90) {
         playerX += -1
-    }
-    if (input.rotation(Rotation.Pitch) > 30 && input.rotation(Rotation.Pitch) < 90) {
-        playerY += 1
-    }
-    if (input.rotation(Rotation.Pitch) < -30 && input.rotation(Rotation.Pitch) > -90) {
-        playerY += -1
     }
     playerX = Math.constrain(playerX, 0, 4)
     playerY = Math.constrain(playerY, 0, 4)
