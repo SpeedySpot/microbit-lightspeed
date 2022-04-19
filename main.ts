@@ -1,3 +1,8 @@
+input.onButtonPressed(Button.A, function () {
+    if (scene == 0) {
+        scene = 1
+    }
+})
 function moveStuff () {
     for (let index = 0; index <= avoidX.length; index++) {
         if (avoidX[index] == 0 || (avoidX[index] == 1 || (avoidX[index] == 2 || (avoidX[index] == 3 || avoidX[index] == 4)))) {
@@ -23,6 +28,17 @@ function renderStuff () {
             led.plot(avoidX[index], avoidY[index])
         }
     }
+}
+function pressA () {
+    led.toggle(2, 1)
+    led.toggle(2, 3)
+    led.toggle(1, 2)
+    led.toggle(1, 3)
+    led.toggle(1, 4)
+    led.toggle(3, 2)
+    led.toggle(3, 3)
+    led.toggle(3, 4)
+    basic.pause(500)
 }
 function renderRoad () {
     if (road == 0) {
@@ -62,6 +78,11 @@ let roadB = 0
 let road = 0
 let playerY = 0
 let playerX = 0
+let scene = 0
+scene = 0
+let nextMove = 0
+let speed = 200
+let spawnRate = 2000
 playerX = 2
 playerY = 4
 road = 0
@@ -70,42 +91,91 @@ avoidX = []
 avoidY = []
 avoidS = []
 avoidT = []
-let roadS = 200
 // render game
 basic.forever(function () {
-    basic.clearScreen()
-    renderRoad()
-    led.plot(playerX, playerY)
-    renderStuff()
-    moveStuff()
+    if (scene == 0) {
+        pressA()
+    }
+    if (scene == 1) {
+        basic.clearScreen()
+        renderRoad()
+        led.plot(playerX, playerY)
+        renderStuff()
+        moveStuff()
+    }
+    if (scene == 2) {
+    	
+    }
 })
 basic.forever(function () {
-    basic.pause(2000)
-    avoidX.push(randint(0, 4))
-    avoidY.push(0)
-    avoidS.push(200)
-    avoidT.push(control.millis())
+    if (scene == 1) {
+        basic.pause(5000)
+        if (speed != 50) {
+            for (let index = 0; index < 15; index++) {
+                speed += -10
+                basic.pause(5000)
+            }
+        }
+    }
+})
+basic.forever(function () {
+    if (scene == 1) {
+        basic.pause(spawnRate)
+        avoidX.push(randint(0, 4))
+        avoidY.push(0)
+        avoidS.push(speed)
+        avoidT.push(control.millis())
+    }
+})
+basic.forever(function () {
+    if (scene == 1) {
+        basic.pause(5000)
+        if (spawnRate != 100) {
+            for (let index = 0; index < 19; index++) {
+                spawnRate += -100
+                basic.pause(5000)
+            }
+        }
+    }
 })
 // road state change
 basic.forever(function () {
-    road = 0
-    basic.pause(roadS)
-    road = 1
-    basic.pause(roadS)
-    road = 2
-    basic.pause(roadS)
-    road = 3
-    basic.pause(roadS)
+    if (scene == 1) {
+        road = 0
+        basic.pause(speed)
+        road = 1
+        basic.pause(speed)
+        road = 2
+        basic.pause(speed)
+        road = 3
+        basic.pause(speed)
+    }
 })
 // Tilt Loop
 basic.forever(function () {
-    if (input.rotation(Rotation.Roll) > 10 && input.rotation(Rotation.Roll) < 90) {
-        playerX += 1
+    if (scene == 1) {
+        if (input.rotation(Rotation.Roll) > 5 && input.rotation(Rotation.Roll) < 45) {
+            playerX += 1
+            if (input.rotation(Rotation.Roll) > 5 && input.rotation(Rotation.Roll) < 12) {
+                nextMove = 0
+            } else {
+                nextMove = 1
+            }
+        }
+        if (input.rotation(Rotation.Roll) < -5 && input.rotation(Rotation.Roll) > -45) {
+            playerX += -1
+            if (input.rotation(Rotation.Roll) < -5 && input.rotation(Rotation.Roll) > -12) {
+                nextMove = 0
+            } else {
+                nextMove = 1
+            }
+        }
+        playerX = Math.constrain(playerX, 0, 4)
+        playerY = Math.constrain(playerY, 0, 4)
+        if (nextMove == 0) {
+            basic.pause(200)
+        } else {
+            basic.pause(100)
+        }
     }
-    if (input.rotation(Rotation.Roll) < -10 && input.rotation(Rotation.Roll) > -90) {
-        playerX += -1
-    }
-    playerX = Math.constrain(playerX, 0, 4)
-    playerY = Math.constrain(playerY, 0, 4)
-    basic.pause(200)
 })
