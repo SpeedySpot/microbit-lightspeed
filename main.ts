@@ -1,6 +1,11 @@
 input.onButtonPressed(Button.A, function () {
     if (scene == 0) {
         scene = 1
+        scoreT = control.millis()
+    }
+    if (scene == 2) {
+        basic.clearScreen()
+        scene = 3
     }
 })
 function moveStuff () {
@@ -17,9 +22,38 @@ function moveStuff () {
                 avoidY.removeAt(index)
             }
             if (avoidY[index] == playerY && avoidX[index] == playerX) {
-                control.reset()
+                basic.clearScreen()
+                score = control.millis() - scoreT
+                scene = 2
             }
         }
+    }
+}
+function gameOver () {
+    if (scene == 2) {
+        led.plot(0, 0)
+        led.plot(1, 1)
+        led.plot(2, 2)
+        led.plot(3, 3)
+        led.plot(4, 4)
+        led.plot(4, 0)
+        led.plot(3, 1)
+        led.plot(1, 3)
+        led.plot(0, 4)
+        basic.pause(500)
+        basic.clearScreen()
+    }
+    if (scene == 2) {
+        led.plot(2, 1)
+        led.plot(2, 3)
+        led.plot(1, 2)
+        led.plot(1, 3)
+        led.plot(1, 4)
+        led.plot(3, 2)
+        led.plot(3, 3)
+        led.plot(3, 4)
+        basic.pause(500)
+        basic.clearScreen()
     }
 }
 function renderStuff () {
@@ -30,15 +64,32 @@ function renderStuff () {
     }
 }
 function pressA () {
-    led.toggle(2, 1)
-    led.toggle(2, 3)
-    led.toggle(1, 2)
-    led.toggle(1, 3)
-    led.toggle(1, 4)
-    led.toggle(3, 2)
-    led.toggle(3, 3)
-    led.toggle(3, 4)
-    basic.pause(500)
+    if (scene == 0) {
+        led.plot(0, 3)
+        led.plot(1, 2)
+        led.plot(1, 3)
+        led.plot(2, 2)
+        led.plot(2, 3)
+        led.plot(3, 2)
+        led.plot(3, 3)
+        led.plot(4, 3)
+        led.plot(1, 4)
+        led.plot(3, 4)
+        basic.pause(500)
+        basic.clearScreen()
+    }
+    if (scene == 0) {
+        led.plot(2, 1)
+        led.plot(2, 3)
+        led.plot(1, 2)
+        led.plot(1, 3)
+        led.plot(1, 4)
+        led.plot(3, 2)
+        led.plot(3, 3)
+        led.plot(3, 4)
+        basic.pause(500)
+        basic.clearScreen()
+    }
 }
 function renderRoad () {
     if (road == 0) {
@@ -79,6 +130,10 @@ let road = 0
 let playerY = 0
 let playerX = 0
 let scene = 0
+let scoreT = 0
+let score = 0
+score = 0
+scoreT = 0
 scene = 0
 let nextMove = 0
 let speed = 200
@@ -104,14 +159,18 @@ basic.forever(function () {
         moveStuff()
     }
     if (scene == 2) {
-    	
+        gameOver()
+    }
+    if (scene == 3) {
+        basic.showNumber(score)
+        basic.pause(500)
     }
 })
 basic.forever(function () {
     if (scene == 1) {
         basic.pause(5000)
-        if (speed != 50) {
-            for (let index = 0; index < 15; index++) {
+        if (speed != 100) {
+            for (let index = 0; index < 10; index++) {
                 speed += -10
                 basic.pause(5000)
             }
@@ -129,11 +188,11 @@ basic.forever(function () {
 })
 basic.forever(function () {
     if (scene == 1) {
-        basic.pause(5000)
-        if (spawnRate != 100) {
-            for (let index = 0; index < 19; index++) {
+        basic.pause(3000)
+        if (spawnRate != 500) {
+            for (let index = 0; index < 15; index++) {
                 spawnRate += -100
-                basic.pause(5000)
+                basic.pause(3000)
             }
         }
     }
@@ -154,17 +213,18 @@ basic.forever(function () {
 // Tilt Loop
 basic.forever(function () {
     if (scene == 1) {
-        if (input.rotation(Rotation.Roll) > 5 && input.rotation(Rotation.Roll) < 45) {
+        nextMove = 2
+        if (input.rotation(Rotation.Roll) > 7 && input.rotation(Rotation.Roll) < 90) {
             playerX += 1
-            if (input.rotation(Rotation.Roll) > 5 && input.rotation(Rotation.Roll) < 12) {
+            if (input.rotation(Rotation.Roll) > 7 && input.rotation(Rotation.Roll) < 35) {
                 nextMove = 0
             } else {
                 nextMove = 1
             }
         }
-        if (input.rotation(Rotation.Roll) < -5 && input.rotation(Rotation.Roll) > -45) {
+        if (input.rotation(Rotation.Roll) < -7 && input.rotation(Rotation.Roll) > -90) {
             playerX += -1
-            if (input.rotation(Rotation.Roll) < -5 && input.rotation(Rotation.Roll) > -12) {
+            if (input.rotation(Rotation.Roll) < -7 && input.rotation(Rotation.Roll) > -35) {
                 nextMove = 0
             } else {
                 nextMove = 1
