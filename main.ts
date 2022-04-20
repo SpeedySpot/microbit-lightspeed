@@ -146,6 +146,15 @@ avoidX = []
 avoidY = []
 avoidS = []
 avoidT = []
+nextMove = 0
+basic.forever(function () {
+    if (scene == 1) {
+        if (speed >= 150) {
+            basic.pause(5000)
+            speed += -10
+        }
+    }
+})
 // render game
 basic.forever(function () {
     if (scene == 0) {
@@ -168,17 +177,6 @@ basic.forever(function () {
 })
 basic.forever(function () {
     if (scene == 1) {
-        basic.pause(5000)
-        if (speed != 100) {
-            for (let index = 0; index < 10; index++) {
-                speed += -10
-                basic.pause(5000)
-            }
-        }
-    }
-})
-basic.forever(function () {
-    if (scene == 1) {
         basic.pause(spawnRate)
         avoidX.push(randint(0, 4))
         avoidY.push(0)
@@ -188,12 +186,9 @@ basic.forever(function () {
 })
 basic.forever(function () {
     if (scene == 1) {
-        basic.pause(3000)
-        if (spawnRate != 500) {
-            for (let index = 0; index < 15; index++) {
-                spawnRate += -100
-                basic.pause(3000)
-            }
+        if (spawnRate >= 500) {
+            basic.pause(3000)
+            spawnRate += -100
         }
     }
 })
