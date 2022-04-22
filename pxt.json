@@ -22,6 +22,7 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "blocksprj"
+    "preferredEditor": "blocksprj",
+    "disableTargetTemplateFiles": true
     
 }
